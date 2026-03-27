@@ -1,0 +1,224 @@
+/* =============================================
+   Email Database Management System
+   Getdata Page — Premium Dashboard Layout
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
+
+.page {
+  padding: 24px;
+  background-color: #f8fafc;
+  min-height: calc(100vh - 80px);
+  font-family: 'Outfit', sans-serif;
+}
+
+.pageHeader {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 24px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 24px;
+  margin-bottom: 24px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  border: 1px solid #e2e8f0;
+  width: 100%;
+}
+
+#leftside,
+#rightside {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  width: 50%;
+  justify-content: space-evenly;
+  /* border: 1px solid black; */
+  align-items: center;
+}
+#leftside div,
+#rightside div{
+  display: flex;
+  flex-direction: column;
+  
+  width: 50%;
+  justify-content: space-around;
+  /* border: 1px solid black; */
+  
+}
+.pageHeader label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #475569;
+  margin-bottom: 6px;
+  display: block;
+}
+
+.pageHeader input {
+  width: 100%;
+  padding: 10px 14px;
+  border: 1px solid #cbd5e1;
+  border-radius: 10px;
+  font-size: 0.95rem;
+  color: #1e293b;
+  background: #ffffff;
+  transition: all 0.2s;
+  outline: none;
+}
+
+.pageHeader input:focus {
+  border-color: #0A174E;
+  box-shadow: 0 0 0 3px rgba(10, 23, 78, 0.1);
+}
+
+.actionBtn {
+  margin-top: 10px;
+  align-items: center;
+}
+
+.getBtn {
+  width: 50%;
+  padding: 12px 24px;
+  background-color: #F5D042;
+  color: #0A174E;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s;
+  box-shadow: 0 4px 6px -1px rgba(10, 23, 78, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.5s, color 0.2s, shadow 0.15s ease-in-out;
+}
+
+.getBtn:hover {
+
+  background-color: #1a2a6c;
+  color: #F5D042;
+
+  box-shadow: 0 6px 8px -1px rgba(10, 23, 78, 0.3);
+}
+
+.getBtn:disabled {
+  background-color: #94a3b8;
+  cursor: not-allowed;
+  transform: none;
+}
+
+.tableContainer {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e2e8f0;
+}
+
+#tableHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 18px 24px;
+  background-color: #0A174E;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+#tableHeader h1 {
+  color: #F5D042;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+.downloadBtn {
+  padding: 10px 16px;
+  background-color:#98ff69;
+  color: #0A174E;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.875rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: padding 2s ease-in-out;
+}
+
+.downloadBtn:hover {
+  background-color: #aff38f;
+  padding:10px 10%;
+}
+
+#tableBody {
+  overflow-x: auto;
+  max-height: 500px;
+}
+
+.dataTable {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.dataTable thead th {
+  background-color: #F5D042;
+  color: #0A174E;
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  padding: 12px 24px;
+  position: sticky;
+  top: 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.dataTable tbody td {
+  padding: 14px 24px;
+  font-size: 0.875rem;
+  color: #1e293b;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+.dataTable tbody tr:hover {
+  background-color: #f8fafc;
+}
+
+.emptyState {
+  text-align: center;
+  padding: 60px 24px;
+  color: #94a3b8;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+
+.emptyState i {
+  font-size: 2rem;
+}
+
+@media (max-width: 640px) {
+  .page {
+    padding: 16px;
+  }
+  
+  .pageHeader {
+    padding: 16px;
+  }
+
+  #tableHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .downloadBtn {
+    width: 100%;
+    justify-content: center;
+  }
+}

@@ -1,0 +1,615 @@
+/* =============================================
+   Email Database Management System
+   Upload Page — Fixed & Flexible Layout
+   ============================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Lato:wght@300;400;600;700&display=swap');
+
+/* ---------- Page ---------- */
+.uploadPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 14px;
+  
+  min-height: 100vh;
+  background-color: #f4f6f9;
+  font-family: 'Lato', sans-serif;
+  box-sizing: border-box;
+}
+
+/* ---------- Page Header ---------- */
+.pageHeader {
+  width: 95%;
+  padding: 20px;
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  text-align: center;
+}
+
+.pageHeader h1 {
+  margin-bottom: 25px;
+  font-family: 'Cinzel', serif;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0A174E;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+/* ---------- Upload Form ---------- */
+.uploadForm {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.uploadForm form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 800px;
+  padding: 30px;
+  background-color: #ffffff;
+  border: 1px solid #e0e6ed;
+  border-radius: 20px;
+  box-shadow: 0 2px 15px rgba(0,0,0,0.03);
+}
+
+/* ---------- Upload Box ---------- */
+.uploadBox {
+  width: 100%;
+}
+
+.uploadBox input[type="file"] {
+  display: none;
+}
+
+.uploadLabel {
+  display: block;
+  border: 2px dashed #cbd5e1;
+  border-radius: 15px;
+  padding: 40px;
+  text-align: center;
+  cursor: pointer;
+  background-color: #f8fafc;
+  transition: all 0.3s ease;
+}
+
+.uploadLabel:hover {
+  background-color: #f1f5f9;
+  border-color: #0A174E;
+}
+
+.uploadContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+}
+
+.uploadIcon {
+  width: 60px;
+  height: 60px;
+}
+
+.uploadIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.uploadContent p {
+  margin: 0;
+  font-size: 1rem;
+  color: #0A174E;
+  font-weight: 500;
+}
+
+.uploadContent span {
+  color: #258beb;
+  font-weight: 600;
+  background-color: #dceeff;
+  padding: 4px 12px;
+  border-radius: 6px;
+  font-size: 1.05rem;
+}
+
+.uploadContent small {
+  color: #ef4444;
+  font-size: 0.78rem;
+}
+
+.uploadForm form button {
+  margin-top: 20px;
+  padding: 10px 78px;
+  font-size: 15px;
+  font-family: 'Lato', sans-serif;
+  font-weight: 800;
+  background-color: #F5D042;
+  color: #0A174E;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.5s, color 0.2s, transform 0.15s ease-in-out;
+}
+
+.uploadForm form button:hover {
+  background-color: #0A174E;
+  color: #F5D042;
+  transform: translateY(-1px);
+}
+
+/* ---------- Upload Result Section ---------- */
+.uploadResultSection {
+  width: 90%;
+  text-align: center;
+  border: 1px solid #d1d9e0;
+  color: #0A174E;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
+  border-radius: 15px;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.uploadResult {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-evenly;
+  padding: 20px;
+  gap: 16px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+}
+
+.uploadResult img {
+  max-width: 80%;
+  height: auto;
+  object-fit: cover;
+}
+
+#result1 {
+  flex: 1 1 200px;
+  min-width: 160px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #C7D3D4;
+  font-size: 1rem;
+  background-color: #603F83;
+  border: 1px solid #F5D042;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+#result2 {
+  flex: 1 1 200px;
+  min-width: 160px;
+  max-width: 300px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  color: #00203F;
+  font-size: 1rem;
+  background-color: #ADEFD1;
+  border-radius: 20px;
+  box-sizing: border-box;
+}
+
+#result1 h1,
+#result2 h1 {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: #ed6f63;
+  padding: 12px 0;
+  margin: 0;
+}
+
+#resultTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* ============================================
+   BASE STYLES — Mobile First (< 480px)
+   ============================================ */
+
+/* ---------- Main Container ---------- */
+.container {
+  width: 95%;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 24px;
+}
+
+/* ================================================
+   PREPROCESS SECTION (left panel on desktop)
+   ================================================ */
+.preprocessSection {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ---------- File Info Bar ---------- */
+.fileInfo {
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  background-color: rgba(255, 255, 255, 0.7);
+  border-radius: 15px 15px 0 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-wrap: wrap;
+  color: #0A174E;
+}
+
+.fileInfo h2 {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #0A174E;
+  word-break: break-all;
+}
+
+/* ---------- Icon (file icon circle) ---------- */
+.icon {
+  width: 34px;
+  height: 34px;
+  border: 1px solid rgb(172, 211, 226);
+  background-color: rgba(172, 211, 226, 0.5);
+  border-radius: 50%;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon img {
+  padding: 6px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* ---------- Preprocess Options Wrapper ---------- */
+.preprocessOptions {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+  overflow: hidden;
+  flex: 1;
+}
+
+/* ---------- Sheet Select Row ---------- */
+#sheetSelect {
+  width: 100%;
+  padding: 10px 12px;
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  border-bottom: 1px solid #e2e8f0;
+  flex-wrap: wrap;
+}
+
+#sheetSelect div {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+#sheetSelect div label {
+  font-size: 0.92rem;
+  font-family: 'Trebuchet MS', Arial, sans-serif;
+  font-weight: 700;
+  color: #0A174E;
+  white-space: nowrap;
+}
+
+#sheetSelect div select {
+  flex: 1;
+  min-width: 100px;
+  max-width: 200px;
+  padding: 6px 8px;
+  border: 1px solid #c8d6ea;
+  border-radius: 8px;
+  background-color: #eaebec;
+  font-size: 0.82rem;
+  color: #0A174E;
+}
+
+#sheetSelect div button {
+  padding: 7px 16px;
+  border: none;
+  border-radius: 8px;
+  background-color: #F5D042;
+  color: #0A174E;
+  font-weight: 800;
+  font-size: 0.82rem;
+  cursor: pointer;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+#sheetSelect div button:hover {
+  background-color: #e0bc1f;
+  transform: translateY(-1px);
+}
+
+/* ---------- Column Mapping Panel ---------- */
+#columnSelect {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+#columnSelect1 {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  box-shadow: 0 2px 6px rgba(10, 23, 78, 0.06);
+  overflow-y: auto;
+  max-height: 280px;
+}
+
+#columnSelect1 > div {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 8px;
+  border-radius: 8px;
+  background: #f8fafc;
+  border: 1px solid #e9eef5;
+  transition: border-color 0.2s;
+  gap: 6px;
+}
+
+#columnSelect1 label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0A174E;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  min-width: 70px;
+}
+
+#columnSelect1 select {
+  flex: 1;
+  min-width: 80px;
+  padding: 4px 6px;
+  border: 1px solid #c8d6ea;
+  border-radius: 6px;
+  background-color: #f1f5fb;
+  color: #0A174E;
+  font-size: 0.78rem;
+}
+
+#checkBoxContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  background: #f0f4ff;
+  border: 1px solid #ff2600;
+  margin-top: 4px;
+}
+
+#checkBoxContainer label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #0A174E;
+  cursor: pointer;
+}
+
+#columnSelect2 {
+  width: 100%;
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 10px 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 2px 6px rgba(10, 23, 78, 0.06);
+  overflow: hidden;
+}
+
+.customBtnContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  overflow: hidden;
+  min-height: 0;
+}
+
+#customBtn {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  max-height: 200px;
+  min-height: 60px;
+}
+
+#customBtnHeader {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  width: 100%;
+  padding: 8px 10px;
+  background: #f8fafc;
+  border-bottom: 1px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#customList > div {
+  display: flex;
+  flex-direction: column;
+  padding: 8px 10px 4px;
+  border-bottom: 1px solid #eff2f7;
+  gap: 4px;
+}
+
+#btn {
+  padding: 9px 22px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, #F5D042 0%, #f0c020 100%);
+  color: #0A174E;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  box-shadow: 0 2px 6px rgba(245, 208, 66, 0.4);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+#custombtn {
+  background-color: #f84646;
+  padding: 7px 20px;
+  border: none;
+  color: white;
+  font-weight: 700;
+  font-family: 'Lato', sans-serif;
+  font-size: 0.82rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.ResultSection {
+  background-color: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  padding: 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.statistics {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+}
+
+#statistic1, #statistic2, #statistic3 {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  padding: 15px 25px;
+  background: #ffffff;
+  border-radius: 100px;
+  gap: 15px;
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+#statistic1 { border-bottom: 4px solid #00b7ff; }
+#statistic2 { border-bottom: 4px solid #05ce8b; }
+#statistic3 { border-bottom: 4px solid #e4a701; }
+
+#icon1 div {
+  border: 1px solid rgb(165, 217, 252);
+  padding: 6px;
+  width: 38px;
+  height: 38px;
+  background-color: rgba(165, 217, 252, 0.5);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+#statisticText {
+ width: 80%;
+ text-align: center;
+}
+#statisticText p{
+  font-size:medium;
+  font-weight: 700;
+  color: #0A174E;
+}
+#statisticText h1{
+  color: red;
+  font-size:larger;
+  font-weight: 700;
+  font-variant-numeric: oldstyle-nums;
+}
+.tableContainer {
+  width: 100%;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: auto;
+  background-color: #f1efef;
+  border-radius: 10px;
+}
+
+.resultTable {
+  width: 100%;
+  min-width: 360px;
+  border-collapse: collapse;
+  background-color: white;
+}
+
+.resultTable th {
+  background-color: #e7e7e7;
+  color: #000;
+  padding: 9px 12px;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+.resultTable td {
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 0.78rem;
+  color: #1a1a2e;
+  background-color: #f1efef;
+}
