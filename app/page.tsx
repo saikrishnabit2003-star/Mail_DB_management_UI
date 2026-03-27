@@ -91,18 +91,18 @@ export default function UploadPage() {
     setNextCustomId((n) => n + 1);
   };
 
-  const handleCustomColChange = (id, value) => {
+  const handleCustomColChange = (id: number, value: string) => {
     setCustomCols((prev) =>
       prev.map((c) => (c.id === id ? { ...c, value } : c))
     );
   };
 
-  const handleRemoveCustom = (id) => {
+  const handleRemoveCustom = (id: number) => {
     setCustomCols((prev) => prev.filter((c) => c.id !== id));
   };
 
-  const handleFileChange = (e) => {
-    const selectedFile = e.target.files[0];
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = e.target.files?.[0];
     if (selectedFile) {
       setFile(selectedFile);
       setUploadData(null);
@@ -113,7 +113,7 @@ export default function UploadPage() {
     }
   };
 
-  const handleUpload = async (e) => {
+  const handleUpload = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!file) return;
 
@@ -160,7 +160,7 @@ export default function UploadPage() {
       } else {
         throw new Error('Processing response returned non-success status');
       }
-    } catch (err) {
+    } catch (err: any) {
       setUploadError(err.message || 'Something went wrong during upload.');
     } finally {
       setIsUploading(false);
