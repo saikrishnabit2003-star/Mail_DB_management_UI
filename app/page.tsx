@@ -160,8 +160,12 @@ export default function UploadPage() {
       } else {
         throw new Error('Processing response returned non-success status');
       }
-    } catch (err: any) {
-      setUploadError(err.message || 'Something went wrong during upload.');
+    } catch (err) {
+      if (err instanceof Error) {
+        setUploadError(err.message);
+      } else {
+        setUploadError('Something went wrong while loading sheet.');
+      }
     } finally {
       setIsUploading(false);
     }
@@ -198,7 +202,11 @@ export default function UploadPage() {
         throw new Error('Sheet selection returned non-success status');
       }
     } catch (err) {
-      setProceedError(err.message || 'Something went wrong while loading sheet.');
+      if (err instanceof Error) {
+        setProceedError(err.message);
+      } else {
+        setProceedError('Something went wrong while loading sheet.');
+      }
     } finally {
       setIsProceeding(false);
     }
@@ -260,7 +268,11 @@ export default function UploadPage() {
         throw new Error('Preprocess returned non-success status');
       }
     } catch (err) {
-      setPreprocessError(err.message || 'Something went wrong during preprocessing.');
+      if (err instanceof Error) {
+        setPreprocessError(err.message);
+      } else {
+        setPreprocessError('Something went wrong while loading sheet.');
+      }
     } finally {
       setIsPreprocessing(false);
     }
