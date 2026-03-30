@@ -1,8 +1,3 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  crossOrigin: 'anonymous',
-};
-
-export default nextConfig;
-
+module.exports = {
+  allowedDevOrigins: ['local-origin.dev', '*.local-origin.dev','unflushed-uninterpretively-corey.ngrok-free.dev','https://mail-db-management-ui.vercel.app/'],
+}

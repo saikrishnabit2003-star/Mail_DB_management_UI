@@ -1,38 +1,33 @@
-import { handleUpload, type HandleUploadBody } from '@vercel/blob/client';
-import { NextResponse, type NextRequest } from 'next/server';
+import { handleUpload } from '@vercel/blob/client';
+import { NextResponse } from 'next/server';
 
-export async function POST(request: NextRequest): Promise<NextResponse> {
-  const body = (await request.json()) as HandleUploadBody;
+export const runtime = 'edge'; // 🔥 IMPORTANT
+
+export async function POST(request: Request) {
+  const body = await request.json();
 
   try {
     const jsonResponse = await handleUpload({
       body,
       request,
-      onBeforeGenerateToken: async (pathname) => {
-        console.log('Generating token for:', pathname);
-        return {
-          allowedContentTypes: [
-            'text/csv',
-            'application/vnd.ms-excel',
-            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
-            'application/octet-stream',
-          ],
-          addRandomSuffix: true,
-          maximumSizeInBytes: 100 * 1024 * 1024, // 100 MB (Hobby limit safe bet)
-        };
-      },
+      onBeforeGenerateToken: async () => ({
+        allowedContentTypes: [
+          'text/csv',
+          'application/vnd.ms-excel',
+          'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        ],
+        addRandomSuffix: true,
+      }),
       onUploadCompleted: async ({ blob }) => {
-        console.log('Blob upload completed:', blob.url);
+        console.log('Uploaded:', blob.url);
       },
     });
 
     return NextResponse.json(jsonResponse);
-  } catch (error) {
-    console.error('Vercel Blob upload error:', error);
+  } catch (error: any) {
     return NextResponse.json(
-      { error: (error as Error).message },
+      { error: error.message },
       { status: 400 }
     );
   }
 }
-
