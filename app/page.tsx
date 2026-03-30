@@ -136,7 +136,7 @@ export default function UploadPage() {
         filename: file.name
       };
 
-      const response = await fetch('https://email-ingestion-backend.vercel.app/files/process-blob', {
+      const response = await fetch('http://localhost:8000/files/process-blob', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
