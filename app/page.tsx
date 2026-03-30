@@ -129,7 +129,7 @@ export default function UploadPage() {
   // This is the CRITICAL fix for the 404
   const newBlob = await upload(safeFileName, file, {
     access: 'public',
-  handleUploadUrl: '/api/blob/upload',
+  handleUploadUrl: '/app/api/blob/upload',
   onUploadProgress: (progressEvent) => {
     console.log(`Upload Progress: ${progressEvent.percentage}%`);
     // You could set a state here to show a progress bar to the user
