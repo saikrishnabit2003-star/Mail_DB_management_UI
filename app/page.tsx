@@ -129,7 +129,11 @@ export default function UploadPage() {
   // This is the CRITICAL fix for the 404
   const newBlob = await upload(safeFileName, file, {
     access: 'public',
-    handleUploadUrl: '/api/blob/upload', // Matches your folder: app/api/blob/upload/
+  handleUploadUrl: '/api/blob/upload',
+  onUploadProgress: (progressEvent) => {
+    console.log(`Upload Progress: ${progressEvent.percentage}%`);
+    // You could set a state here to show a progress bar to the user
+  }// Matches your folder: app/api/blob/upload/
   });
 
       setBlobUrl(newBlob.url);
@@ -190,7 +194,7 @@ export default function UploadPage() {
     setDuplicateCol('');
     setCustomCols([]);
     setNextCustomId(1);
-https://email-ingestion-backend.vercel.app/files/38438c80-8fbb-4e22-9879-1275c8ea6496/columns?sheet_name=25k_to_30k.xlsx
+
     try {
       const response = await fetch(`https://email-ingestion-backend.vercel.app/files/${uploadData.file_id}/columns?sheet_name=${selectedSheet}`, {
         method: 'GET',
@@ -431,8 +435,8 @@ https://email-ingestion-backend.vercel.app/files/38438c80-8fbb-4e22-9879-1275c8e
                 id={Style.btn}
                 onClick={handleProceed}
                 disabled={!selectedSheet || isProceeding}
-              >
-                {isProceeding ? 'Loading...' : 'Proceed'}
+              >i
+                {isProceeding ? 'Loadng...' : 'Proceed'}
               </button>
             </div>
 
