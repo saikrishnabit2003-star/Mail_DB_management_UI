@@ -124,7 +124,8 @@ export default function UploadPage() {
     setSheetData(null);
 
     try {
-      const newBlob = await upload(file.name, file, {
+      const safeFileName = encodeURIComponent(file.name);
+      const newBlob = await upload(safeFileName, file, {
         access: 'public',
         handleUploadUrl: '/api/blob/upload',
       });
