@@ -136,7 +136,8 @@ export default function UploadPage() {
         file_url: newBlob.url,
         filename: file.name
       };
-
+      console.log("File_url",newBlob.url)
+      console.log("file_name",file.name)
       const response = await fetch('http://localhost:8000/files/process-blob', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
