@@ -123,12 +123,14 @@ export default function UploadPage() {
     setSelectedSheet('');
     setSheetData(null);
 
-    try {
-      const safeFileName = encodeURIComponent(file.name);
-      const newBlob = await upload(safeFileName, file, {
-        access: 'public',
-        handleUploadUrl: '/api/blob/upload',
-      });
+   try {
+  const safeFileName = encodeURIComponent(file.name);
+  
+  // This is the CRITICAL fix for the 404
+  const newBlob = await upload(safeFileName, file, {
+    access: 'public',
+    handleUploadUrl: '/api/blob/upload', // Matches your folder: app/api/blob/upload/
+  });
 
       setBlobUrl(newBlob.url);
 
@@ -138,6 +140,8 @@ export default function UploadPage() {
       };
       console.log("File_url",newBlob.url)
       console.log("file_name",file.name)
+      console.log("payload",payload)
+
       const response = await fetch('http://localhost:8000/files/process-blob', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
