@@ -126,7 +126,7 @@ export default function UploadPage() {
     try {
       const newBlob = await upload(file.name, file, {
         access: 'public',
-        handleUploadUrl: '/app/api/blob/upload',
+        handleUploadUrl: '/api/blob/upload',
       });
 
       setBlobUrl(newBlob.url);
