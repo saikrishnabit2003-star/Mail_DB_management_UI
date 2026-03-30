@@ -142,7 +142,7 @@ export default function UploadPage() {
       console.log("file_name",file.name)
       console.log("payload",payload)
 
-      const response = await fetch('http://localhost:8000/files/process-blob', {
+      const response = await fetch('https://email-ingestion-backend.vercel.app/files/process-blob', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -150,6 +150,7 @@ export default function UploadPage() {
 
       if (!response.ok) throw new Error(`Processing failed: ${response.status}`);
       const data = await response.json();
+      console.log(data)
 
       if (data.status === 'success') {
         setUploadData({
@@ -189,7 +190,7 @@ export default function UploadPage() {
     setDuplicateCol('');
     setCustomCols([]);
     setNextCustomId(1);
-
+https://email-ingestion-backend.vercel.app/files/38438c80-8fbb-4e22-9879-1275c8ea6496/columns?sheet_name=25k_to_30k.xlsx
     try {
       const response = await fetch(`https://email-ingestion-backend.vercel.app/files/${uploadData.file_id}/columns?sheet_name=${selectedSheet}`, {
         method: 'GET',
