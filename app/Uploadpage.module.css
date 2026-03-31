@@ -229,9 +229,9 @@
 
 /* ---------- Main Container ---------- */
 .container {
-  width: 95%;
-  display: grid;
-  grid-template-columns: 1fr 2fr;
+  width: 90%;
+  display: flex;
+  flex-direction: column;
   gap: 24px;
 }
 
@@ -250,7 +250,7 @@
 .fileInfo {
   display: flex;
   flex-direction: row;
-  justify-content: flex-start;
+  justify-content: center;
   align-items: center;
   gap: 10px;
   padding: 12px 14px;
@@ -265,7 +265,7 @@
 }
 
 .fileInfo h2 {
-  font-size: 0.8rem;
+  font-size: 1.2rem;
   font-weight: 700;
   color: #0A174E;
   word-break: break-all;
@@ -282,10 +282,11 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  padding: 5px;
 }
 
 .icon img {
-  padding: 6px;
+  padding: 1px;
   width: 100%;
   height: 100%;
   object-fit: cover;
@@ -309,18 +310,20 @@
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-around;
   gap: 8px;
-  border-bottom: 1px solid #e2e8f0;
+  
   flex-wrap: wrap;
 }
 
 #sheetSelect div {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
   flex-wrap: wrap;
   flex: 1;
+  /* border: 3px dotted ; */
 }
 
 #sheetSelect div label {
@@ -334,7 +337,7 @@
 #sheetSelect div select {
   flex: 1;
   min-width: 100px;
-  max-width: 200px;
+  max-width: 500px;
   padding: 6px 8px;
   border: 1px solid #c8d6ea;
   border-radius: 8px;
@@ -344,7 +347,7 @@
 }
 
 #sheetSelect div button {
-  padding: 7px 16px;
+  padding: 7px 56px;
   border: none;
   border-radius: 8px;
   background-color: #F5D042;
@@ -352,8 +355,8 @@
   font-weight: 800;
   font-size: 0.82rem;
   cursor: pointer;
-  white-space: nowrap;
-  flex-shrink: 0;
+  /* white-space: nowrap; */
+  /* flex-shrink: 0; */
   transition: background-color 0.2s, transform 0.15s;
 }
 
@@ -375,12 +378,14 @@
 }
 
 #columnSelect1 {
-  width: 100%;
+  width: 90%;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 10px 50px;
   display: flex;
+  justify-content: center;
+  align-items: center;
   flex-direction: column;
   gap: 6px;
   box-shadow: 0 2px 6px rgba(10, 23, 78, 0.06);
@@ -389,16 +394,17 @@
 }
 
 #columnSelect1 > div {
+  width: 100%;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  padding: 5px 8px;
+  justify-content: space-evenly;
+  padding: 5px 80px;
   border-radius: 8px;
   background: #f8fafc;
   border: 1px solid #e9eef5;
   transition: border-color 0.2s;
-  gap: 6px;
+  gap: 10px;
 }
 
 #columnSelect1 label {
@@ -444,24 +450,32 @@
 }
 
 #columnSelect2 {
-  width: 100%;
+  width: 90%;
   background: #ffffff;
   border: 1px solid #e2e8f0;
   border-radius: 12px;
-  padding: 10px 12px;
+  padding: 10px 50px;
   display: flex;
+  justify-content: center;
   flex-direction: column;
+  align-items: center;
   gap: 8px;
   box-shadow: 0 2px 6px rgba(10, 23, 78, 0.06);
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 280px;
 }
 
 .customBtnContainer {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 6px;
   overflow: hidden;
-  min-height: 0;
+  min-height: 100px;
+  max-height:400px ;
+  padding: 10px 30px;
+  /* border: 3px dotted red; */
+  overflow: auto;
 }
 
 #customBtn {
@@ -486,16 +500,28 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  overflow: auto;
 }
 
 #customList > div {
+  width: 100%;
   display: flex;
-  flex-direction: column;
-  padding: 8px 10px 4px;
+  flex-direction: row;
+  padding: 8px 5px;
   border-bottom: 1px solid #eff2f7;
   gap: 4px;
+  
 }
+#customList div select{
+  width: 98%;
 
+}
+#customList div button{
+  background-color: none;
+  color: red;
+  font-size: medium;
+  font-weight: 600;
+}
 #btn {
   padding: 9px 22px;
   font-size: 0.85rem;
@@ -513,7 +539,7 @@
 
 #custombtn {
   background-color: #f84646;
-  padding: 7px 20px;
+  padding: 7px 10px;
   border: none;
   color: white;
   font-weight: 700;
@@ -521,6 +547,8 @@
   font-size: 0.82rem;
   border-radius: 8px;
   cursor: pointer;
+  position: sticky;
+  top: -10px;
 }
 
 .ResultSection {
@@ -535,20 +563,31 @@
 
 .statistics {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
+  flex-direction:column;
   align-items: center;
   gap: 20px;
+  /* min-width:auto;
+  max-width: 90%; */
+  flex-wrap: wrap;
+}
+#statisticscontainer{
+ 
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
 }
 
 #statistic1, #statistic2, #statistic3 {
-  flex: 1;
+  
+  min-width: 300px;
+  
   display: flex;
   align-items: center;
   padding: 15px 25px;
   background: #ffffff;
   border-radius: 100px;
-  gap: 15px;
+  gap: 5px;
   position: relative;
   overflow: hidden;
   box-shadow: 0 4px 10px rgba(0,0,0,0.05);
@@ -556,7 +595,7 @@
 
 #statistic1 { border-bottom: 4px solid #00b7ff; }
 #statistic2 { border-bottom: 4px solid #05ce8b; }
-#statistic3 { border-bottom: 4px solid #e4a701; }
+#statistic3 { border-bottom: 4px solid #cb77f1; }
 
 #icon1 div {
   border: 1px solid rgb(165, 217, 252);
@@ -600,7 +639,10 @@
   border-collapse: collapse;
   background-color: white;
 }
-
+.resultTable thead{
+  position: sticky;
+  top: 0;
+}
 .resultTable th {
   background-color: #e7e7e7;
   color: #000;

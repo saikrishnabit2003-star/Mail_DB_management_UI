@@ -17,7 +17,6 @@ interface CustomColumn {
 }
 
 interface UploadData {
-  file_id: string;
   filename: string;
   file_type: string;
   sheets: string[];
@@ -25,8 +24,8 @@ interface UploadData {
 }
 
 interface SheetData {
-  file_id: string;
-  sheet_name: string;
+  filename:string;
+  sheetname:string
   columns: string[];
 }
 
@@ -123,18 +122,18 @@ export default function UploadPage() {
     setSelectedSheet('');
     setSheetData(null);
 
-   try {
-  const safeFileName = encodeURIComponent(file.name);
-  
-  // This is the CRITICAL fix for the 404
-  const newBlob = await upload(safeFileName, file, {
-    access: 'public',
-  handleUploadUrl: '/api/blob/upload',
-  onUploadProgress: (progressEvent) => {
-    console.log(`Upload Progress: ${progressEvent.percentage}%`);
-    // You could set a state here to show a progress bar to the user
-  }// Matches your folder: app/api/blob/upload/
-  });
+    try {
+      const safeFileName = encodeURIComponent(file.name);
+
+      // This is the CRITICAL fix for the 404
+      const newBlob = await upload(safeFileName, file, {
+        access: 'public',
+        handleUploadUrl: '/api/blob/upload',
+        // onUploadProgress: (progressEvent) => {
+        //   console.log(`Upload Progress: ${progressEvent.percentage}%`);
+          // You could set a state here to show a progress bar to the user
+        // }// Matches your folder: app/api/blob/upload/
+      });
 
       setBlobUrl(newBlob.url);
 
@@ -142,9 +141,8 @@ export default function UploadPage() {
         file_url: newBlob.url,
         filename: file.name
       };
-      console.log("File_url",newBlob.url)
-      console.log("file_name",file.name)
-      console.log("payload",payload)
+
+      console.log("payload", payload)
 
       const response = await fetch('https://email-ingestion-backend.vercel.app/files/process-blob', {
         method: 'POST',
@@ -154,11 +152,11 @@ export default function UploadPage() {
 
       if (!response.ok) throw new Error(`Processing failed: ${response.status}`);
       const data = await response.json();
-      console.log(data)
+      console.log("sir response",data)
 
       if (data.status === 'success') {
         setUploadData({
-          file_id: data.file_id,
+          
           filename: data.filename,
           file_type: data.file_type,
           sheets: data.sheets,
@@ -182,9 +180,12 @@ export default function UploadPage() {
     }
   };
 
-  const handleProceed = async () => {
-    if (!uploadData?.file_id || !selectedSheet) return;
 
+
+  const handleProceed = async () => {
+    
+  if (!selectedSheet || !uploadData) return;
+    
     setIsProceeding(true);
     setProceedError(null);
     setSheetData(null);
@@ -194,19 +195,25 @@ export default function UploadPage() {
     setDuplicateCol('');
     setCustomCols([]);
     setNextCustomId(1);
-
+    const payload = {
+          file_url:blobUrl,
+          filename: uploadData.filename,
+          sheet_name: selectedSheet,
+      };
     try {
-      const response = await fetch(`https://email-ingestion-backend.vercel.app/files/${uploadData.file_id}/columns?sheet_name=${selectedSheet}`, {
-        method: 'GET',
+      const response = await fetch('https://email-ingestion-backend.vercel.app/files/blob-columns', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error(`Sheet selection failed: ${response.status}`);
+      console.log("my request",payload)
+      // if (!response.ok) throw new Error(`Sheet selection failed: ${response.status}`);
       const data = await response.json();
-
+      console.log("sir response",data)
       if (data.status === 'success') {
         setSheetData({
-          file_id: data.file_id,
-          sheet_name: data.sheet_name,
+          filename:data.filename,
+          sheetname:data.sheetname,
           columns: data.columns,
         });
       } else {
@@ -224,7 +231,7 @@ export default function UploadPage() {
   };
 
   const handlePreprocess = async () => {
-    if (!uploadData?.file_id || !selectedSheet) return;
+    // if (!uploadData?.file_id || !selectedSheet) return;
 
     setIsPreprocessing(true);
     setPreprocessError(null);
@@ -253,7 +260,7 @@ export default function UploadPage() {
     }
 
     const payload = {
-      blob_url: blobUrl,
+      file_url: blobUrl,
       filename: uploadData?.filename || file?.name || 'unknown',
       sheet_name: selectedSheet || null,
       field_mapping,
@@ -262,14 +269,15 @@ export default function UploadPage() {
     };
 
     try {
-      const response = await fetch('https://email-ingestion-backend.vercel.app/files/process', {
+      const response = await fetch('https://email-ingestion-backend.vercel.app/files/blob-process', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      if (!response.ok) throw new Error(`Preprocess failed: ${response.status}`);
+      console.log("my request",payload)
+      
       const data = await response.json();
-
+      console.log("response",data)
       if (data.status === 'success') {
         setPreprocessData({
           summary: data.summary,
@@ -290,7 +298,7 @@ export default function UploadPage() {
   };
 
   const handleInsertToDB = async () => {
-    if (!uploadData?.file_id || !selectedSheet) return;
+    if (!selectedSheet) return;
 
     setIsInserting(true);
     setInsertError(null);
@@ -318,7 +326,7 @@ export default function UploadPage() {
     }
 
     const payload = {
-      blob_url: blobUrl,
+      file_url: blobUrl,
       filename: uploadData?.filename || file?.name || 'unknown',
       sheet_name: selectedSheet || null,
       field_mapping,
@@ -327,7 +335,7 @@ export default function UploadPage() {
     };
 
     try {
-      const response = await fetch('https://email-ingestion-backend.vercel.app/files/forward-processed', {
+      const response = await fetch('https://email-ingestion-backend.vercel.app/files/blob-forward-processed', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
@@ -335,7 +343,7 @@ export default function UploadPage() {
 
       if (!response.ok) throw new Error(`Insert failed: ${response.status}`);
       const data = await response.json();
-
+      console.log(data)
       if (data.status === 'success') {
         window.alert(`Successfully inserted into DB!\n\nMessage: ${data.message || 'Data ingested successfully.'}`);
       } else {
@@ -431,13 +439,16 @@ export default function UploadPage() {
                   ))}
                 </select>
               </div>
-              <button
+              <div>
+                <button
                 id={Style.btn}
                 onClick={handleProceed}
                 disabled={!selectedSheet || isProceeding}
               >i
                 {isProceeding ? 'Loadng...' : 'Proceed'}
               </button>
+              </div>
+              
             </div>
 
             {/* ── Column Mapping Sidebar ── */}
@@ -562,33 +573,37 @@ export default function UploadPage() {
         {/* ── Right Side: Statistics & Preview ── */}
         <div className={Style.ResultSection}>
           <div className={Style.statistics}>
-            <div id={Style.statistic1}>
-              <div id={Style.icon1}>
-                <div><img src={rowicon} alt="Rows" /></div>
-              </div>
-              <div id={Style.statisticText}>
-                <p>Total Rows</p>
-                <h1>{preprocessData?.summary?.total_rows_input ?? 0}</h1>
+            <div id={Style.statisticscontainer}>
+                  <div id={Style.statistic1}>
+                  <div id={Style.icon1}>
+                    <div><img src={rowicon} alt="Rows" /></div>
+                  </div>
+                  <div id={Style.statisticText}>
+                    <p>Total Rows</p>
+                    <h1>{preprocessData?.summary?.total_rows_input ?? 0}</h1>
+                  </div>
+                </div>
+                <div id={Style.statistic2}>
+                  <div id={Style.icon1}>
+                    <div><img src={duplicateicon} alt="Duplicates" /></div>
+                  </div>
+                  <div id={Style.statisticText}>
+                    <p>Duplicates</p>
+                    <h1>{preprocessData?.summary?.duplicates_removed ?? 0}</h1>
+                  </div>
+                </div>
+
+                  <div id={Style.statistic3}>
+                <div id={Style.icon1}>
+                  <div><img src={mailicon} alt="Unique" /></div>
+                </div>
+                <div id={Style.statisticText}>
+                  <p>Unique</p>
+                  <h1>{preprocessData?.summary?.final_unique_emails ?? 0}</h1>
+                </div>
               </div>
             </div>
-            <div id={Style.statistic2}>
-              <div id={Style.icon1}>
-                <div><img src={duplicateicon} alt="Duplicates" /></div>
-              </div>
-              <div id={Style.statisticText}>
-                <p>Duplicates</p>
-                <h1>{preprocessData?.summary?.duplicates_removed ?? 0}</h1>
-              </div>
-            </div>
-            <div id={Style.statistic3}>
-              <div id={Style.icon1}>
-                <div><img src={mailicon} alt="Unique" /></div>
-              </div>
-              <div id={Style.statisticText}>
-                <p>Unique</p>
-                <h1>{preprocessData?.summary?.final_unique_emails ?? 0}</h1>
-              </div>
-            </div>
+          
             <button
               id={Style.btn}
               disabled={!preprocessData || isInserting}
