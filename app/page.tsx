@@ -83,6 +83,13 @@ export default function UploadPage() {
   // ─── Logic 4: Insert into DB state ──────────────────────────────────────────
   const [isInserting, setIsInserting] = useState(false);
   const [insertError, setInsertError] = useState<string | null>(null);
+  
+  const selectedMappingCols = [
+    nameCol,
+    emailCol,
+    countryCol,
+    ...customCols.map((c) => c.value),
+  ].filter(Boolean);
 
   const handleAddCustom = () => {
     if (customCols.length >= 5) return;
@@ -184,7 +191,8 @@ export default function UploadPage() {
 
   const handleProceed = async () => {
     
-  if (!selectedSheet || !uploadData) return;
+  if (!uploadData) return;
+  if (uploadData.has_multiple_sheets && !selectedSheet) return;
     
     setIsProceeding(true);
     setProceedError(null);
@@ -298,7 +306,8 @@ export default function UploadPage() {
   };
 
   const handleInsertToDB = async () => {
-    if (!selectedSheet) return;
+    if (!uploadData) return;
+    if (uploadData.has_multiple_sheets && !selectedSheet) return;
 
     setIsInserting(true);
     setInsertError(null);
@@ -443,9 +452,9 @@ export default function UploadPage() {
                 <button
                 id={Style.btn}
                 onClick={handleProceed}
-                disabled={!selectedSheet || isProceeding}
-              >i
-                {isProceeding ? 'Loadng...' : 'Proceed'}
+                disabled={isProceeding || !uploadData || (uploadData.has_multiple_sheets && !selectedSheet)}
+              >
+                {isProceeding ? 'Loading...' : 'Proceed'}
               </button>
               </div>
               
@@ -463,7 +472,9 @@ export default function UploadPage() {
                       onChange={(e) => setNameCol(e.target.value)}
                     >
                       <option value="" hidden>Select Name</option>
-                      {sheetData.columns.map((col) => (
+                      {sheetData.columns
+                        .filter((col) => col === nameCol || !selectedMappingCols.includes(col))
+                        .map((col) => (
                         <option key={col} value={col}>{col}</option>
                       ))}
                     </select>
@@ -477,7 +488,9 @@ export default function UploadPage() {
                       onChange={(e) => setEmailCol(e.target.value)}
                     >
                       <option value="" hidden>Select Email</option>
-                      {sheetData.columns.map((col) => (
+                      {sheetData.columns
+                        .filter((col) => col === emailCol || !selectedMappingCols.includes(col))
+                        .map((col) => (
                         <option key={col} value={col}>{col}</option>
                       ))}
                     </select>
@@ -491,7 +504,9 @@ export default function UploadPage() {
                       onChange={(e) => setCountryCol(e.target.value)}
                     >
                       <option value="" hidden>Select Country</option>
-                      {sheetData.columns.map((col) => (
+                      {sheetData.columns
+                        .filter((col) => col === countryCol || !selectedMappingCols.includes(col))
+                        .map((col) => (
                         <option key={col} value={col}>{col}</option>
                       ))}
                     </select>
@@ -547,9 +562,11 @@ export default function UploadPage() {
                             onChange={(e) => handleCustomColChange(custom.id, e.target.value)}
                           >
                             <option value="" hidden>{`Custom Field ${idx + 1}`}</option>
-                            {sheetData.columns.map((col) => (
-                              <option key={col} value={col}>{col}</option>
-                            ))}
+                            {sheetData.columns
+                              .filter((col) => col === custom.value || !selectedMappingCols.includes(col)) 
+                              .map((col) => (
+                               <option key={col} value={col}>{col}</option>
+                             ))}
                           </select>
                           <button onClick={() => handleRemoveCustom(custom.id)}>✕</button>
                         </div>
