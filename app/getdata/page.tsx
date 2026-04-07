@@ -88,45 +88,52 @@ export default function Getdata() {
         setResponseData([]); 
 
         const payload: any = {
-            limit: Number(limit)
+            limit: limit
         };
 
         if (fromDate) payload.from_date = fromDate;
         if (toDate) payload.to_date = toDate;
         if (serialNoFrom && serialNoFrom !== '0') {
-            payload.serial_no_from = Number(serialNoFrom);
+            payload.serial_no_from = serialNoFrom;
         }
         if (serialNoTo && serialNoTo !== '0') {
-            payload.sno_to = Number(serialNoTo);
+            payload.sno_to = serialNoTo;
         }
 
-        try {
-            const response = await fetch('https://email-management-database.vercel.app/validate', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(payload),
-            });
+       try {
+    const response = await fetch('https://email-management-database.vercel.app/validate', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+    });
+
+            console.log("request", payload);
 
             if (!response.ok) {
                 throw new Error(`Request failed with status ${response.status}`);
             }
 
-            const data = await response.json();
+            // ✅ IMPORTANT: use text() instead of json()
+            const text = await response.text();
 
-            if (Array.isArray(data)) {
-                setResponseData(data);
-            } else if (data.data && Array.isArray(data.data)) {
-                setResponseData(data.data);
-            } else {
-                setResponseData([]);
-            }
+            // ✅ Convert JSONL → JSON array
+            const parsedData = text
+                .trim()
+                .split("\n")
+                .map(line => JSON.parse(line));
+
+            console.log("response", parsedData);
+
+            // ✅ Set data
+            setResponseData(parsedData);
 
             window.alert("Data fetched successfully!");
-        } catch (err: any) {
-            setError(err.message);
-            window.alert(`Error: ${err.message}`);
+
+        } catch (e: any) {
+            setError(e.message);
+            window.alert(`Error: ${e.message}`);
         } finally {
             setIsLoading(false);
         }

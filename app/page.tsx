@@ -83,6 +83,11 @@ export default function UploadPage() {
   // ─── Logic 4: Insert into DB state ──────────────────────────────────────────
   const [isInserting, setIsInserting] = useState(false);
   const [insertError, setInsertError] = useState<string | null>(null);
+  const [showPopup, setShowPopup] = useState(false);
+  const [popupMessage, setPopupMessage] = useState('');
+  const [popupType, setPopupType] = useState();
+
+
   
   const selectedMappingCols = [
     nameCol,
@@ -149,7 +154,7 @@ export default function UploadPage() {
         filename: file.name
       };
 
-      console.log("payload", payload)
+      // console.log("payload", payload)
 
       const response = await fetch('https://email-ingestion-backend.vercel.app/files/process-blob', {
         method: 'POST',
@@ -159,7 +164,7 @@ export default function UploadPage() {
 
       if (!response.ok) throw new Error(`Processing failed: ${response.status}`);
       const data = await response.json();
-      console.log("sir response",data)
+      // console.log("sir response",data)
 
       if (data.status === 'success') {
         setUploadData({
@@ -214,10 +219,10 @@ export default function UploadPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      console.log("my request",payload)
+      // console.log("my request",payload)
       // if (!response.ok) throw new Error(`Sheet selection failed: ${response.status}`);
       const data = await response.json();
-      console.log("sir response",data)
+      // console.log("sir response",data)
       if (data.status === 'success') {
         setSheetData({
           filename:data.filename,
@@ -282,10 +287,10 @@ export default function UploadPage() {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload),
       });
-      console.log("my request",payload)
+      // console.log("my request",payload)
       
       const data = await response.json();
-      console.log("response",data)
+      // console.log("response",data)
       if (data.status === 'success') {
         setPreprocessData({
           summary: data.summary,
@@ -352,15 +357,20 @@ export default function UploadPage() {
 
       if (!response.ok) throw new Error(`Insert failed: ${response.status}`);
       const data = await response.json();
-      console.log(data)
+      // console.log(data)
       if (data.status === 'success') {
-        window.alert(`Successfully inserted into DB!\n\nMessage: ${data.message || 'Data ingested successfully.'}`);
+        setPopupMessage(data.target_response.message);
+        setPopupType(data.target_status_code);
+        setShowPopup(true);
       } else {
-        throw new Error(data.message || 'Insert returned non-success status');
+        throw new Error(data.target_response.message || 'Insert returned non-success status');
       }
     } catch (err: any) {
-      setInsertError(err.message || 'Something went wrong during insertion.');
-      window.alert(`Error: ${err.message || 'Something went wrong during insertion.'}`);
+      const errorMsg = err.target_response.message || 'Something went wrong during insertion.';
+      setInsertError(errorMsg);
+      setPopupMessage(errorMsg);
+      setPopupType(errorMsg.target_status_code);
+      setShowPopup(true);
     } finally {
       setIsInserting(false);
     }
@@ -389,7 +399,7 @@ export default function UploadPage() {
                     <img src={Uploadimg} alt="Upload Icon" />
                   </div>
                   <p>Drag & drop or <span>Browse</span></p>
-                  <small>Max size: 5MB (CSV, XLSX). Supported formats: CSV, XLSX</small>
+                  <small>Max size: 100MB (CSV, XLSX). Supported formats: CSV, XLSX</small>
                   <p>{file ? file.name : 'No file selected'}</p>
                 </div>
               </label>
@@ -634,6 +644,7 @@ export default function UploadPage() {
             <table className={Style.resultTable}>
               <thead>
                 <tr>
+                  <th>S.no</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Country</th>
@@ -644,6 +655,7 @@ export default function UploadPage() {
                 {preprocessData?.preview?.length ? (
                   preprocessData.preview.map((row: any, i: number) => (
                     <tr key={i}>
+                      <td>{i+1}</td>
                       <td>{row.name || '-'}</td>
                       <td>{row.email || '-'}</td>
                       <td>{row.country || '-'}</td>
@@ -660,8 +672,38 @@ export default function UploadPage() {
               </tbody>
             </table>
           </div>
+
+          
         </div>
       </div>
+
+      {/* Popup Container */}
+      {showPopup && (
+        <div className={Style.popupOverlay}>
+          <div className={Style.popupContainer}>
+            <div className={Style.popupHeader}>
+              <h3>{popupType === 200 ? 'Success' : 'Error'}</h3>
+              <button 
+                className={Style.popupClose}
+                onClick={() => setShowPopup(false)}
+              >
+                ×
+              </button>
+            </div>
+            <div className={Style.popupBody}>
+              <p>{popupMessage}</p>
+            </div>
+            <div className={Style.popupFooter}>
+              <button 
+                className={Style.popupBtn}
+                onClick={() => setShowPopup(false)}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
